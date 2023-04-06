@@ -8,11 +8,16 @@ const firebaseConfig = {
     appId: "1:850499234345:web:f1c2334f79507601274a38"
 };
 
-//initialize firebase
+//инициализация базы данных
 firebase.initializeApp(firebaseConfig);
 
-//reference database
+//ссылка на базу данных
 var contactFormDB = firebase.database().ref('contactForm');
+
+var DB = firebase.database();
+
+
+
 
 // contactFormDB.once("value",function(snapshot)){
 //     snapshot.forEach(function(element)){
@@ -27,32 +32,41 @@ document.getElementById('contactForm').addEventListener('submit', submitForm);
 function submitForm(e) {
     e.preventDefault();
 
-    var name = getElementVal('nameID');
+    //записываем в переменные значения введенные в форму 
     var second_name = getElementVal('second_nameID');
     var email = getElementVal('emailID');
+    var password = getElementVal('passwordID');
 
-    saveMessages(second_name, name, email);
+    saveMessages(second_name, name, email, password);
 
-    //   enable alert
+    //   показать оповещение
     document.querySelector(".alert").style.display = "block";
 
-    //   remove the alert
+    //   удаление оповещения
     setTimeout(() => {
         document.querySelector(".alert").style.display = "none";
     }, 3000);
 
     //   reset the form
     document.getElementById("contactForm").reset();
+
+
 }
 
-const saveMessages = (second_name, name, email) => {
+const saveMessages = (second_name, name, email, password) => {
+    //добавление элементов в массив
     var newContactForm = contactFormDB.push();
 
+    //сохранение данных
     newContactForm.set({
         second_name: second_name,
         name: name,
         email: email,
+        password: password,
     });
+
+
+    
 }
 
 function getElementVal(id) {
